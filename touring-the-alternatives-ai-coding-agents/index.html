@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crimson Bite — Food Delivery</title>
+  <meta name="description" content="Crimson Bite delivers burgers, pizza, sides, and drinks. Order online with a red-hot cart that remembers your picks.">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#menu">Skip to menu</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="logo" href="#home" aria-label="Crimson Bite home">
+        <span class="logo-mark" aria-hidden="true"></span>
+        Crimson Bite
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#home">Home</a>
+        <a href="#menu">Menu</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <button
+        type="button"
+        class="cart-toggle"
+        id="cart-toggle"
+        aria-expanded="false"
+        aria-controls="cart-drawer"
+      >
+        Cart
+        <span class="cart-badge" id="cart-badge" aria-live="polite">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <p class="hero-kicker">Night kitchen · Citywide delivery</p>
+      <h1>Heat.&nbsp;Salt.<br><em>Now.</em></h1>
+      <p class="hero-copy">
+        Burgers smashed on cast iron, pies pulled from a 700° deck, and sides
+        that refuse to be an afterthought. Order in minutes.
+      </p>
+      <a class="btn btn-primary" href="#menu">Order now</a>
+    </section>
+
+    <section class="menu-section" id="menu" aria-labelledby="menu-heading">
+      <div class="section-head">
+        <h2 id="menu-heading">The board</h2>
+        <p>Filter by plate. Free delivery on orders of $25 or more.</p>
+      </div>
+
+      <div class="filters" id="filters" role="group" aria-label="Menu categories">
+        <button type="button" class="filter-btn is-active" data-category="all" aria-pressed="true">All</button>
+        <button type="button" class="filter-btn" data-category="burgers" aria-pressed="false">Burgers</button>
+        <button type="button" class="filter-btn" data-category="pizza" aria-pressed="false">Pizza</button>
+        <button type="button" class="filter-btn" data-category="sides" aria-pressed="false">Sides</button>
+        <button type="button" class="filter-btn" data-category="drinks" aria-pressed="false">Drinks</button>
+      </div>
+
+      <div class="menu-grid" id="menu-grid"></div>
+    </section>
+
+    <section class="about-section" id="about" aria-labelledby="about-heading">
+      <h2 id="about-heading">About the kitchen</h2>
+      <p>
+        Crimson Bite started as a late-night window and stayed that way on
+        purpose. Small menu, high heat, no filler. We cook to order and send
+        riders the moment the ticket prints.
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="contact">
+    <div class="footer-grid">
+      <div>
+        <h2>Crimson Bite</h2>
+        <p>Red-hot plates, black-and-white honesty. We deliver until the lights go down.</p>
+      </div>
+      <div>
+        <h3>Hours</h3>
+        <p>Sun–Thu 11:00–23:00<br>Fri–Sat 11:00–01:00</p>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        <p>
+          414 Ember Avenue<br>
+          <a href="tel:+15550188">(555) 014-188</a><br>
+          <a href="mailto:orders@crimsonbite.local">orders@crimsonbite.local</a>
+        </p>
+      </div>
+    </div>
+    <p class="footer-note">© 2026 Crimson Bite. Delivery estimates are local only.</p>
+  </footer>
+
+  <div class="overlay" id="cart-overlay" hidden></div>
+  <aside
+    class="cart-drawer"
+    id="cart-drawer"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="cart-heading"
+    hidden
+  >
+    <div class="drawer-head">
+      <h2 id="cart-heading">Your cart</h2>
+      <button type="button" class="icon-btn" id="cart-close" aria-label="Close cart">×</button>
+    </div>
+    <ul class="cart-list" id="cart-items"></ul>
+    <p class="cart-empty" id="cart-empty">Your cart is empty. Add something delicious.</p>
+    <div class="cart-totals" id="cart-totals" hidden>
+      <div><span>Subtotal</span><span id="total-sub">$0.00</span></div>
+      <div><span>Tax (8%)</span><span id="total-tax">$0.00</span></div>
+      <div><span id="delivery-label">Delivery</span><span id="total-delivery">$0.00</span></div>
+      <div class="cart-grand"><span>Total</span><span id="total-grand">$0.00</span></div>
+    </div>
+    <button type="button" class="btn btn-primary btn-block" id="checkout-open" disabled>Checkout</button>
+  </aside>
+
+  <div class="overlay" id="checkout-overlay" hidden></div>
+  <div
+    class="modal"
+    id="checkout-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="checkout-heading"
+    hidden
+  >
+    <div class="modal-head">
+      <h2 id="checkout-heading">Checkout</h2>
+      <button type="button" class="icon-btn" id="checkout-close" aria-label="Close checkout">×</button>
+    </div>
+    <form id="checkout-form" novalidate>
+      <label>
+        Full name
+        <input type="text" id="field-name" name="name" autocomplete="name" required minlength="2">
+        <span class="field-error" id="error-name"></span>
+      </label>
+      <label>
+        Phone
+        <input type="tel" id="field-phone" name="phone" autocomplete="tel" required>
+        <span class="field-error" id="error-phone"></span>
+      </label>
+      <label>
+        Delivery address
+        <textarea id="field-address" name="address" autocomplete="street-address" required minlength="8" rows="3"></textarea>
+        <span class="field-error" id="error-address"></span>
+      </label>
+      <label>
+        Notes <span class="optional">(optional)</span>
+        <textarea id="field-notes" name="notes" rows="2"></textarea>
+      </label>
+      <button type="submit" class="btn btn-primary btn-block">Place order</button>
+    </form>
+  </div>
+
+  <div class="overlay" id="confirm-overlay" hidden></div>
+  <div
+    class="modal"
+    id="confirm-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="confirm-heading"
+    hidden
+  >
+    <h2 id="confirm-heading">Order confirmed</h2>
+    <p class="confirm-id">Order <strong id="order-id"></strong> is in the kitchen.</p>
+    <ul class="confirm-summary" id="confirm-summary"></ul>
+    <p class="confirm-total">Total <strong id="confirm-total"></strong></p>
+    <button type="button" class="btn btn-primary btn-block" id="confirm-done">Done</button>
+  </div>
+</body>
+</html>
